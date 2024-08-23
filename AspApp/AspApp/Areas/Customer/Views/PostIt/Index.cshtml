@@ -1,0 +1,7 @@
+﻿@model IEnumerable<PostIt>
+
+@foreach(PostIt post in Model)
+{
+    <p>@post.Id</p>
+    <p>@post.Description</p>
+}
