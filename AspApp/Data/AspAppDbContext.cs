@@ -23,7 +23,8 @@ namespace AspApp.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<PostIt>().HasData(
-                new PostIt { Id = 1, Description = "Hello World 2 !!" }
+                new PostIt { Id = 1, Description = "Hello World 2 !!" },
+                new PostIt { Id = 2, Description = "Coucou" }
 
                 );
         }
