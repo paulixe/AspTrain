@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspApp.Migrations
 {
     [DbContext(typeof(AspAppDbContext))]
-    [Migration("20240818120453_users")]
-    partial class users
+    [Migration("20240824053733_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,29 @@ namespace AspApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AspApp.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("WorkshopId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("WorkshopId");
+
+                    b.ToTable("Bookings");
+                });
 
             modelBuilder.Entity("AspApp.Models.PostIt", b =>
                 {
@@ -46,6 +69,113 @@ namespace AspApp.Migrations
                         {
                             Id = 1,
                             Description = "Hello World 2 !!"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Coucou"
+                        });
+                });
+
+            modelBuilder.Entity("AspApp.Models.Tool", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TutorialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("TutorialId");
+
+                    b.ToTable("Tools");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Knife"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "jigsaw"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "knitting machine"
+                        });
+                });
+
+            modelBuilder.Entity("AspApp.Models.Tutorial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tutorials");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Knitting tutorial"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Carpentry tutorial"
+                        });
+                });
+
+            modelBuilder.Entity("AspApp.Models.Workshop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Workshops");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Paix Dieu"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Villeurbanne"
                         });
                 });
 
@@ -247,6 +377,34 @@ namespace AspApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AspApp.Models.Booking", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("AspApp.Models.Workshop", "Workshop")
+                        .WithMany("Bookings")
+                        .HasForeignKey("WorkshopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Workshop");
+                });
+
+            modelBuilder.Entity("AspApp.Models.Tool", b =>
+                {
+                    b.HasOne("AspApp.Models.Booking", null)
+                        .WithMany("ItemsBooked")
+                        .HasForeignKey("BookingId");
+
+                    b.HasOne("AspApp.Models.Tutorial", null)
+                        .WithMany("RequiredTools")
+                        .HasForeignKey("TutorialId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -296,6 +454,21 @@ namespace AspApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AspApp.Models.Booking", b =>
+                {
+                    b.Navigation("ItemsBooked");
+                });
+
+            modelBuilder.Entity("AspApp.Models.Tutorial", b =>
+                {
+                    b.Navigation("RequiredTools");
+                });
+
+            modelBuilder.Entity("AspApp.Models.Workshop", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

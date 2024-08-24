@@ -17,15 +17,36 @@ namespace AspApp.Data
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
         public DbSet<PostIt> Posts { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Tutorial> Tutorials { get; set; }
+        public DbSet<Tool> Tools { get; set; }
+        public DbSet<Workshop> Workshops { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+
+
             modelBuilder.Entity<PostIt>().HasData(
                 new PostIt { Id = 1, Description = "Hello World 2 !!" },
                 new PostIt { Id = 2, Description = "Coucou" }
+                );
 
+            modelBuilder.Entity<Tool>().HasData(
+                new Tool { Id = 1, Name = "Knife" },
+                new Tool { Id = 2, Name = "jigsaw" },
+                new Tool { Id = 3, Name = "knitting machine" }
+                );
+
+            modelBuilder.Entity<Tutorial>().HasData(
+                new Tutorial { Id = 1, Name = "Knitting tutorial" },
+                new Tutorial { Id = 2, Name = "Carpentry tutorial" }
+                );
+
+            modelBuilder.Entity<Workshop>().HasData(
+                new Workshop { Id = 1, Name = "Paix Dieu" },
+                new Workshop { Id = 2, Name = "Villeurbanne" }
                 );
         }
     }

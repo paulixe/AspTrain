@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp\\AspApp.csproj": {}
+    "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp\\AspApp.csproj": {
+    "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp\\AspApp.csproj",
+        "projectUniqueName": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp.csproj",
         "projectName": "AspApp",
-        "projectPath": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp\\AspApp.csproj",
+        "projectPath": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp.csproj",
         "packagesPath": "C:\\Users\\chaum\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\AspApp\\obj\\",
+        "outputPath": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chaum\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -97,11 +97,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x64": {
-          "#import": []
         }
       }
     }
