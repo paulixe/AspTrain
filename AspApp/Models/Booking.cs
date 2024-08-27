@@ -7,7 +7,7 @@ namespace AspApp.Models
     {
         [Key]
         public int Id { get; set; }
-
+        public string ReservationDate { get; set; }
         public string? CustomerId { get; set; }
         public IdentityUser? Customer { get; set; }
         public int WorkshopId { get; set; }

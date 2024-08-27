@@ -33,6 +33,10 @@ namespace AspApp.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ReservationDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("WorkshopId")
                         .HasColumnType("int");
 
@@ -42,7 +46,7 @@ namespace AspApp.Migrations
 
                     b.HasIndex("WorkshopId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("AspApp.Models.PostIt", b =>
@@ -59,7 +63,7 @@ namespace AspApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
 
                     b.HasData(
                         new
@@ -82,25 +86,15 @@ namespace AspApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TutorialId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("TutorialId");
-
-                    b.ToTable("Tools");
+                    b.ToTable("Tools", (string)null);
 
                     b.HasData(
                         new
@@ -133,7 +127,7 @@ namespace AspApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tutorials");
+                    b.ToTable("Tutorials", (string)null);
 
                     b.HasData(
                         new
@@ -161,7 +155,7 @@ namespace AspApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Workshops");
+                    b.ToTable("Workshops", (string)null);
 
                     b.HasData(
                         new
@@ -174,6 +168,21 @@ namespace AspApp.Migrations
                             Id = 2,
                             Name = "Villeurbanne"
                         });
+                });
+
+            modelBuilder.Entity("BookingTool", b =>
+                {
+                    b.Property<int>("BookingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemsBookedId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingsId", "ItemsBookedId");
+
+                    b.HasIndex("ItemsBookedId");
+
+                    b.ToTable("BookingTool", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -374,6 +383,36 @@ namespace AspApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ToolTutorial", b =>
+                {
+                    b.Property<int>("RequiredToolsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsedInTutorialsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequiredToolsId", "UsedInTutorialsId");
+
+                    b.HasIndex("UsedInTutorialsId");
+
+                    b.ToTable("ToolTutorial", (string)null);
+                });
+
+            modelBuilder.Entity("ToolWorkshop", b =>
+                {
+                    b.Property<int>("AvailableAtWorkshopsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToolsAvailableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AvailableAtWorkshopsId", "ToolsAvailableId");
+
+                    b.HasIndex("ToolsAvailableId");
+
+                    b.ToTable("ToolWorkshop", (string)null);
+                });
+
             modelBuilder.Entity("AspApp.Models.Booking", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Customer")
@@ -391,15 +430,19 @@ namespace AspApp.Migrations
                     b.Navigation("Workshop");
                 });
 
-            modelBuilder.Entity("AspApp.Models.Tool", b =>
+            modelBuilder.Entity("BookingTool", b =>
                 {
                     b.HasOne("AspApp.Models.Booking", null)
-                        .WithMany("ItemsBooked")
-                        .HasForeignKey("BookingId");
+                        .WithMany()
+                        .HasForeignKey("BookingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("AspApp.Models.Tutorial", null)
-                        .WithMany("RequiredTools")
-                        .HasForeignKey("TutorialId");
+                    b.HasOne("AspApp.Models.Tool", null)
+                        .WithMany()
+                        .HasForeignKey("ItemsBookedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -453,14 +496,34 @@ namespace AspApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AspApp.Models.Booking", b =>
+            modelBuilder.Entity("ToolTutorial", b =>
                 {
-                    b.Navigation("ItemsBooked");
+                    b.HasOne("AspApp.Models.Tool", null)
+                        .WithMany()
+                        .HasForeignKey("RequiredToolsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspApp.Models.Tutorial", null)
+                        .WithMany()
+                        .HasForeignKey("UsedInTutorialsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("AspApp.Models.Tutorial", b =>
+            modelBuilder.Entity("ToolWorkshop", b =>
                 {
-                    b.Navigation("RequiredTools");
+                    b.HasOne("AspApp.Models.Workshop", null)
+                        .WithMany()
+                        .HasForeignKey("AvailableAtWorkshopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspApp.Models.Tool", null)
+                        .WithMany()
+                        .HasForeignKey("ToolsAvailableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AspApp.Models.Workshop", b =>

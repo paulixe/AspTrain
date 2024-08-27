@@ -1,0 +1,34 @@
+﻿@model IEnumerable<AspApp.Models.Workshop>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <h1 class="px-5">Reserve tools</h1>
+
+    <div class="card-deck d-flex justify-content-center">
+    @foreach(Workshop workshop in Model)
+    {
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-header">@workshop.Name</div>
+            <div class="card-body">
+                @if(workshop.ToolsAvailable.Count>0)
+                {
+                    <h6 class="card-subtitle mb-2 text-muted">Tools available</h6>
+                    <ul>
+                        @foreach (Tool tool in workshop.ToolsAvailable)
+                        {
+                            <li>@tool.Name</li>
+                        }
+                    </ul>
+                }
+            </div>
+            <div class="card-footer">
+                <a asp-action="Details" asp-route-id="@workshop.Id" class="btn btn-primary">Reserve</a>
+            </div>
+        </div>
+    }
+</div>
+</div>
+

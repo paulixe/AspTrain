@@ -1,0 +1,37 @@
+﻿
+<table id="tblData" class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>Reservation date</th>
+            <th>Workshop</th>
+            <th>Tools reserved</th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            dataTable = $('#tblData').DataTable({
+                "ajax": { url: '/customer/booking/getMyBookings', dataSrc: '' },
+                "columns": [
+                    { data: 'reservationDate', "width": "25%" },
+                    { data: 'workshopName', "width": "25%" },
+                    {
+                        data: 'itemsBooked',
+                        "render": function (data) {
+                            return data;
+
+                        },
+                        "width": "25%"
+                    }
+                ]
+            });
+        }
+
+    </script>
+}

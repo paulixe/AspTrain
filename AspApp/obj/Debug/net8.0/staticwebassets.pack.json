@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\wwwroot\\images\\tools\\46e76e17-f471-4fc4-bca2-012028092924.jpg",
+      "PackagePath": "staticwebassets\\images\\tools\\46e76e17-f471-4fc4-bca2-012028092924.jpg"
+    },
+    {
+      "Id": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\wwwroot\\images\\tools\\50fb3a99-1cbd-46fb-bd09-385e60efc0d5.jpg",
+      "PackagePath": "staticwebassets\\images\\tools\\50fb3a99-1cbd-46fb-bd09-385e60efc0d5.jpg"
+    },
+    {
+      "Id": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\wwwroot\\images\\tools\\9f0dca6a-27f6-4315-a913-e59f6e21cdd3.jpg",
+      "PackagePath": "staticwebassets\\images\\tools\\9f0dca6a-27f6-4315-a913-e59f6e21cdd3.jpg"
+    },
+    {
       "Id": "C:\\Users\\chaum\\Desktop\\AspTrain\\AspApp\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

@@ -22,11 +22,16 @@ namespace AspApp.Data
         public DbSet<Tool> Tools { get; set; }
         public DbSet<Workshop> Workshops { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Workshop>().HasMany(w => w.ToolsAvailable).WithMany(t => t.AvailableAtWorkshops);
 
+            modelBuilder.Entity<Tutorial>().HasMany(t => t.RequiredTools).WithMany(t => t.UsedInTutorials);
+
+            modelBuilder.Entity<Booking>().HasMany(b => b.ItemsBooked).WithMany(t => t.Bookings);
 
             modelBuilder.Entity<PostIt>().HasData(
                 new PostIt { Id = 1, Description = "Hello World 2 !!" },
@@ -48,6 +53,8 @@ namespace AspApp.Data
                 new Workshop { Id = 1, Name = "Paix Dieu" },
                 new Workshop { Id = 2, Name = "Villeurbanne" }
                 );
+
+
         }
     }
 }

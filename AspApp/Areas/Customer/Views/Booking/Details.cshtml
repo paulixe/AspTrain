@@ -1,0 +1,94 @@
+﻿@model AspApp.Models.ViewModel.WorkshopVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+<h1>@Model.Workshop.Name</h1>
+<div class="container">
+    <label class="form-check-label">Choose your tools</label>
+
+    <form asp-action="Reserve">
+        <input type="hidden" asp-for="Workshop.Id" />
+        <div class="form-group pt-2">
+            <div class="col-sm-3">
+                <label class="form-check-label" asp-for="BookingDate"></label>
+
+                <div class="input-group date" id="datepicker" data-provide="datepicker">
+                    <input type="text" class="form-control" asp-for="BookingDate">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(model => model.BookingDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div id="tools" class="container m-2" style="display:none">
+            <label asp-for="@Model.Workshop.ToolsAvailable"></label>
+    @for (int i = 0; i < Model.ToolCheckboxes.Count; i++)
+    {
+
+        ToolCheckbox checkbox = Model.ToolCheckboxes[i];
+
+        <div class="form-check">
+            <input class="form-check-input" asp-for="@Model.ToolCheckboxes[i].IsChecked" type="checkbox" checked="@Model.ToolCheckboxes[i].IsChecked">
+            <label class="form-check-label">@checkbox.Tool.Name</label>
+            <input type="hidden" asp-for="@Model.ToolCheckboxes[i].Tool.Id" />
+        </div>
+    }
+        </div>
+
+
+        <div class="form-group pt-4">
+            <input type="submit" value="Reserve" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+        const datePicker = $("#datepicker");
+        let tools;
+        $.ajax({
+            url: "/Customer/Booking/GetToolsAvailable/@Model.Workshop.Id",
+            success: function (data) {
+                tools = data;
+                console.log(data);
+            }
+        })
+
+        const checkboxes = $('input[type="checkbox"]');
+
+        datePicker.datepicker({
+            startDate: new Date()
+            // datesDisabled: ["08/29/2024"]
+        });
+
+        datePicker.on('changeDate', function (e) {
+            $("#tools").show();
+            var dateFormatted = e.format(0, "mm/dd/yyyy");
+
+            checkboxes.each(function()  {
+                var checkbox = $(this);
+                var id = checkbox.next().next().val();
+
+                var correspondingTool = tools.find(t => t.id == id);
+                if (!correspondingTool.bookings.includes(dateFormatted)) {
+                    checkbox.parent().show();
+                }
+                else {
+                    checkbox.parent().hide();
+                    checkbox.prop('checked', false);
+                }
+                })
+            });
+    </script>
+        @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }   
+}

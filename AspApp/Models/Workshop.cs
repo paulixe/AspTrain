@@ -5,5 +5,7 @@
         public int Id { get; set; }
         public string? Name { get; set; }
         public List<Booking> Bookings { get; } = new List<Booking>();
+
+        public List<Tool> ToolsAvailable { get; } = new List<Tool>();
     }
 }
